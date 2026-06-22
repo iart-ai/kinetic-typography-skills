@@ -83,6 +83,8 @@ Animate `font-variation-settings` (covers any axis: `wght`, `wdth`, `slnt`, `ops
 
 ## Deliver & verify (standalone HTML)
 
+> **Packaged helper** (`scripts/`): `scripts/seek-shot.sh anim.html 0 1.5 3` freezes the `?t=N` harness and screenshots each moment; `scripts/contact-sheet.sh sheet.png frame-*.png` tiles them for one-glance review. See `scripts/README.md`.
+
 For a web text reveal / kinetic-title deliverable, ship **one `.html` file that opens directly in a browser** — no build step. One file is the right tier for a headline, title card, or single reveal.
 
 **Output contract:**
