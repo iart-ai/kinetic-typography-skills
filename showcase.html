@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kinetic Typography · GSAP · Light</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Fraunces:ital,opsz,wght@0,9..144,900;1,9..144,500&family=Inter:wght@500;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink:    #14110f;   /* near-black ink */
+    --paper:  #f4f1ea;   /* warm paper */
+    --paper2: #ece7dc;
+    --red:    #e8503a;
+    --amber:  #f2a93b;
+    --blue:   #2f6df0;
+    --pink:   #e9609b;
+    --green:  #1f9e6e;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--paper);
+    font-family: 'Anton', sans-serif;
+  }
+
+  #stage {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(120% 120% at 50% 0%, #fbf9f4 0%, var(--paper) 45%, var(--paper2) 100%);
+    perspective: 1200px;
+    overflow: hidden;
+  }
+
+  /* decorative drifting blobs for depth */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.35;
+    will-change: transform;
+    pointer-events: none;
+  }
+  #blobA { width: 46vmin; height: 46vmin; background: var(--amber); top: -10%; left: -6%; }
+  #blobB { width: 40vmin; height: 40vmin; background: var(--blue);  bottom: -12%; right: -8%; opacity: 0.28; }
+  #blobC { width: 30vmin; height: 30vmin; background: var(--pink);  top: 55%; left: 60%; opacity: 0.22; }
+
+  .scene {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    will-change: transform, opacity;
+    z-index: 2;
+  }
+
+  .line {
+    display: flex;
+    gap: 0 0.08em;
+    overflow: hidden;
+    padding: 0.06em 0;
+    justify-content: center;
+  }
+
+  .word {
+    font-size: clamp(2.6rem, 12.5vw, 10.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-transform: uppercase;
+    white-space: nowrap;
+    will-change: transform, opacity;
+  }
+
+  .char { display: inline-block; will-change: transform, opacity; }
+
+  /* type flavors */
+  .serif {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    text-transform: none;
+    letter-spacing: -0.03em;
+  }
+  .serif.italic { font-style: italic; font-weight: 500; }
+
+  .red    { color: var(--red); }
+  .amber  { color: var(--amber); }
+  .blue   { color: var(--blue); }
+  .pink   { color: var(--pink); }
+  .green  { color: var(--green); }
+  .stroke { color: transparent; -webkit-text-stroke: 2.5px var(--ink); }
+
+  .mega {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(3rem, 17vw, 15rem);
+    line-height: 0.8;
+    color: var(--ink);
+    letter-spacing: -0.03em;
+  }
+
+  /* iart.ai brandmark */
+  .brandmark {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    text-transform: lowercase;
+    font-size: clamp(3.4rem, 18vw, 16rem);
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .brandmark .red { color: var(--red); }
+
+  /* small kicker label */
+  .kicker {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: clamp(0.7rem, 1.6vw, 1.05rem);
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-indent: 0.45em;
+  }
+
+  .bar {
+    position: absolute;
+    will-change: transform;
+    z-index: 1;
+    border-radius: 4px;
+  }
+
+  /* outline circle accent in finale */
+  .ring {
+    position: absolute;
+    border: 3px solid var(--ink);
+    border-radius: 50%;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  /* transition overlay layer (above scenes, below flash) */
+  #fx {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 45;
+    overflow: hidden;
+  }
+  .panel {
+    position: absolute;
+    will-change: transform;
+    visibility: hidden;
+  }
+
+  #flash {
+    position: fixed;
+    inset: 0;
+    background: var(--ink);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  /* paper grain */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    z-index: 60;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* progress line */
+  #progress {
+    position: fixed;
+    left: 0; bottom: 0;
+    height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left;
+    background: var(--ink);
+    z-index: 70;
+  }
+
+  .ui {
+    position: fixed;
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    z-index: 80;
+    color: #6b665c;
+  }
+  #brand { top: 22px; left: 24px; }
+  #replay {
+    bottom: 20px; right: 22px;
+    background: transparent;
+    border: 1.5px solid #cbc4b5;
+    border-radius: 999px;
+    padding: 9px 18px;
+    cursor: pointer;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  #replay:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
+</style>
+</head>
+<body>
+  <div id="stage">
+    <div class="blob" id="blobA"></div>
+    <div class="blob" id="blobB"></div>
+    <div class="blob" id="blobC"></div>
+
+    <!-- Scene 1 : kicker + reveal -->
+    <div class="scene" id="s1">
+      <div class="line"><span class="kicker">A&nbsp;&nbsp;Study&nbsp;&nbsp;in&nbsp;&nbsp;Motion</span></div>
+      <div class="line"><span class="word">Words</span></div>
+      <div class="line"><span class="word serif italic red">that</span></div>
+      <div class="line"><span class="word stroke">MOVE</span></div>
+    </div>
+
+    <!-- Scene 2 : FAST punch -->
+    <div class="scene" id="s2">
+      <div class="line"><span class="word amber">FAST</span></div>
+    </div>
+
+    <!-- Scene 3 : poetic line -->
+    <div class="scene" id="s3">
+      <div class="line"><span class="word">make</span><span class="word blue">&nbsp;it</span></div>
+      <div class="line"><span class="word serif italic">feel</span><span class="word stroke">&nbsp;alive</span></div>
+    </div>
+
+    <!-- Scene 4 : rhythm words -->
+    <div class="scene" id="s4">
+      <div class="line"><span class="word green">RISE</span></div>
+      <div class="line"><span class="word pink">FALL</span></div>
+      <div class="line"><span class="word">REPEAT</span></div>
+    </div>
+
+    <!-- Scene 5 : KINETIC bridge -->
+    <div class="scene" id="s5">
+      <div class="line"><span class="word mega">KINETIC</span></div>
+    </div>
+
+    <!-- Scene 6 : iart.ai brand finale -->
+    <div class="scene" id="s6">
+      <div class="line"><span class="word brandmark">iart<span class="red">.</span>ai</span></div>
+      <div class="line"><span class="kicker">Creative&nbsp;&nbsp;Intelligence&nbsp;&nbsp;Studio</span></div>
+    </div>
+
+    <!-- finale decorations -->
+    <div class="bar" id="b1"></div>
+    <div class="bar" id="b2"></div>
+    <div class="bar" id="b3"></div>
+    <div class="ring" id="ring"></div>
+  </div>
+
+  <!-- creative transition overlays -->
+  <div id="fx">
+    <div class="panel" id="p1"></div>
+    <div class="panel" id="p2"></div>
+    <div class="panel" id="p3"></div>
+    <div class="panel" id="p4"></div>
+  </div>
+
+  <div id="flash"></div>
+  <div class="grain"></div>
+  <div id="progress"></div>
+  <div class="ui" id="brand">◆ iart.ai</div>
+  <button class="ui" id="replay">↻ Replay</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  // --- Split every .word into .char spans (preserve spaces) ---
+  function splitChars(word) {
+    const text = word.textContent;
+    word.textContent = '';
+    const chars = [];
+    for (const ch of text) {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.innerHTML = (ch === ' ' || ch === ' ') ? '&nbsp;' : ch;
+      word.appendChild(span);
+      if (ch !== ' ' && ch !== ' ') chars.push(span);
+    }
+    return chars;
+  }
+  // split everything except the brandmark (which has a nested colored dot)
+  document.querySelectorAll('.word:not(.brandmark)').forEach(splitChars);
+
+  // brandmark: split into chars but preserve the red "." accent
+  function splitBrand(el) {
+    const html = el.innerHTML; // e.g. iart<span class="red">.</span>ai
+    el.innerHTML = '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    tmp.childNodes.forEach(node => {
+      const isDot = node.nodeType === 1; // the <span class="red">
+      const text = node.textContent;
+      for (const ch of text) {
+        const span = document.createElement('span');
+        span.className = 'char' + (isDot ? ' red' : '');
+        span.textContent = ch;
+        el.appendChild(span);
+      }
+    });
+  }
+  document.querySelectorAll('.brandmark').forEach(splitBrand);
+
+  const charsOf = (sel) => gsap.utils.toArray(sel + ' .char');
+
+  gsap.set('.scene', { autoAlpha: 0 });
+  gsap.set(['.bar', '.ring'], { autoAlpha: 0 });
+
+  // gentle continuous blob drift (independent of timeline)
+  gsap.to('#blobA', { xPercent: 12, yPercent: 18, duration: 9, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobB', { xPercent: -16, yPercent: -10, duration: 11, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+  gsap.to('#blobC', { xPercent: -20, yPercent: 14, duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+  function build() {
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+    // progress bar spans the whole ~7.8s timeline
+    tl.fromTo('#progress', { scaleX: 0 }, { scaleX: 1, duration: 7.8, ease: 'none' }, 0);
+
+    // ===== SCENE 1 (0.0 – 1.5) =====
+    tl.set('#s1', { autoAlpha: 1 }, 0)
+      .from('#s1 .kicker', { yPercent: 100, opacity: 0, duration: 0.5 }, 0.05)
+      .from(charsOf('#s1'), {
+        yPercent: 120, rotateX: -90, opacity: 0,
+        stagger: { each: 0.03, from: 'start' }, duration: 0.6
+      }, 0.15)
+      .to('#s1 .stroke .char', { color: 'transparent', duration: 0.01 }, 0.8)
+      // TRANSITION 1 — IMPLODE: everything spirals into a single point
+      .to(charsOf('#s1').concat(gsap.utils.toArray('#s1 .kicker')), {
+        scale: 0, rotation: 140, opacity: 0, filter: 'blur(6px)',
+        stagger: { each: 0.02, from: 'edges' }, duration: 0.5, ease: 'power3.in'
+      }, 1.2)
+      .set('#s1', { autoAlpha: 0 });
+
+    // ===== SCENE 2 (1.5 – 2.4) FAST =====
+    tl.set('#s2', { autoAlpha: 1 }, 1.5)
+      .from('#s2 .word', {
+        scale: 6, opacity: 0, filter: 'blur(24px)', duration: 0.4
+      }, 1.5)
+      .to('#s2 .word', { letterSpacing: '0.06em', duration: 0.5 }, 1.55)
+      .to('#stage', { x: 7, duration: 0.05, yoyo: true, repeat: 5 }, 1.55)
+      .to('#stage', { x: 0, duration: 0.05 }, 1.85)
+      .to('#s2 .word', {
+        scale: 0.2, opacity: 0, filter: 'blur(24px)', duration: 0.35, ease: 'power3.in'
+      }, 2.2)
+      .set('#s2', { autoAlpha: 0 });
+
+    // TRANSITION 2 — VENETIAN SHUTTER: 4 blinds snap shut, swap, then peel up
+    const blinds = ['#p1','#p2','#p3','#p4'];
+    const blindColors = ['var(--ink)','var(--red)','var(--amber)','var(--ink)'];
+    gsap.set(blinds, {
+      visibility: 'visible', left: 0, width: '100%', height: '25.2%',
+      top: (i) => (i * 25) + '%',
+      backgroundColor: (i) => blindColors[i],
+      scaleY: 0, transformOrigin: 'top center'
+    });
+    tl.to(blinds, { scaleY: 1, duration: 0.26, stagger: 0.05, ease: 'power2.in' }, 2.15)
+      .set(blinds, { transformOrigin: 'bottom center' }, 2.52)
+      .to(blinds, { scaleY: 0, duration: 0.32, stagger: 0.05, ease: 'power2.out' }, 2.55)
+      .set(blinds, { visibility: 'hidden' }, 2.95);
+
+    // ===== SCENE 3 (2.5 – 3.8) poetic =====
+    tl.set('#s3', { autoAlpha: 1 }, 2.5)
+      .from(charsOf('#s3'), {
+        yPercent: 130, opacity: 0, skewY: 9,
+        stagger: { each: 0.025, from: 'random' }, duration: 0.55
+      }, 2.5)
+      .from('#s3 .blue', { scale: 1.35, color: 'var(--blue)', duration: 0.4 }, 2.7)
+      .to(charsOf('#s3'), {
+        opacity: 0, yPercent: -60, scale: 0.6,
+        stagger: { each: 0.015, from: 'edges' }, duration: 0.35, ease: 'power3.in'
+      }, 3.5)
+      .set('#s3', { autoAlpha: 0 });
+
+    // TRANSITION 3 — COLOR BAND SWEEP: stacked bands rocket up through the swap
+    const bands = ['#p1','#p2','#p3'];
+    const bandColors = ['var(--blue)','var(--ink)','var(--green)'];
+    gsap.set(bands, {
+      visibility: 'visible', left: '-5%', width: '110%', height: '120%',
+      top: 0, skewY: -6,
+      backgroundColor: (i) => bandColors[i],
+      yPercent: 130
+    });
+    tl.to(bands, { yPercent: -130, duration: 0.6, stagger: 0.08, ease: 'power3.inOut' }, 3.45)
+      .set(bands, { visibility: 'hidden' }, 4.15);
+
+    // ===== SCENE 4 (3.8 – 5.0) RISE / FALL / REPEAT rhythm =====
+    tl.set('#s4', { autoAlpha: 1 }, 3.8);
+    // animate each line with its own character: RISE up, FALL down, REPEAT slam
+    tl.from('#s4 .line:nth-child(1) .char', {
+        yPercent: 120, opacity: 0, stagger: 0.04, duration: 0.45
+      }, 3.82)
+      .from('#s4 .line:nth-child(2) .char', {
+        yPercent: -120, opacity: 0, stagger: 0.04, duration: 0.45
+      }, 4.05)
+      .from('#s4 .line:nth-child(3) .char', {
+        scale: 2.4, opacity: 0, stagger: 0.03, duration: 0.4, ease: 'back.out(2)'
+      }, 4.3)
+      .to('#s4 .line:nth-child(3) .char', {
+        y: -6, duration: 0.08, yoyo: true, repeat: 3, stagger: 0.01
+      }, 4.7)
+      .to(charsOf('#s4'), {
+        opacity: 0, yPercent: 40, filter: 'blur(8px)',
+        stagger: 0.01, duration: 0.3, ease: 'power2.in'
+      }, 4.8)
+      .set('#s4', { autoAlpha: 0 });
+
+    // TRANSITION 4 — WHIP-PAN: blurred horizontal camera whip across the cut
+    tl.to('#stage', { x: -90, filter: 'blur(7px)', duration: 0.16, ease: 'power2.in' }, 4.84)
+      .set('#stage', { x: 100 }, 5.0)
+      .to('#stage', { x: 0, filter: 'blur(0px)', duration: 0.34, ease: 'power3.out' }, 5.0);
+
+    // ===== SCENE 5 (5.0 – 5.9) KINETIC bridge =====
+    tl.set('#s5', { autoAlpha: 1 }, 5.0)
+      .from(charsOf('#s5 .mega'), {
+        yPercent: 110, rotateX: -80, opacity: 0,
+        stagger: { each: 0.04, from: 'center' }, duration: 0.55, ease: 'back.out(1.7)'
+      }, 5.0)
+      // KINETIC collapses inward, handing off to the brand
+      .to(charsOf('#s5 .mega'), {
+        yPercent: -130, opacity: 0, filter: 'blur(10px)',
+        stagger: { each: 0.025, from: 'edges' }, duration: 0.4, ease: 'power3.in'
+      }, 5.5)
+      .set('#s5', { autoAlpha: 0 });
+
+    // TRANSITION 5 — CURTAIN: two ink panels slam shut, then part to unveil the brand
+    gsap.set('#p1', { visibility: 'visible', top: 0, left: 0,   width: '50.5%', height: '100%', backgroundColor: 'var(--ink)', xPercent: -100 });
+    gsap.set('#p2', { visibility: 'visible', top: 0, left: '50%', width: '50.5%', height: '100%', backgroundColor: 'var(--ink)', xPercent: 100 });
+    tl.to(['#p1','#p2'], { xPercent: 0, duration: 0.3, ease: 'power3.in' }, 5.7)
+      .to('#p1', { xPercent: -100, duration: 0.45, ease: 'power4.out' }, 6.05)
+      .to('#p2', { xPercent: 100, duration: 0.45, ease: 'power4.out' }, 6.05)
+      .set(['#p1','#p2'], { visibility: 'hidden' }, 6.55);
+
+    // ===== SCENE 6 (5.9 – 7.8) iart.ai BRAND finale =====
+    gsap.set('#b1', { width: '118%', height: '0.9rem', top: '32%', left: '-9%', background: 'var(--red)',  rotation: -3, autoAlpha: 1 });
+    gsap.set('#b2', { width: '118%', height: '0.9rem', top: '50%', left: '-9%', background: 'var(--amber)',rotation: -3, autoAlpha: 1 });
+    gsap.set('#b3', { width: '118%', height: '0.9rem', top: '68%', left: '-9%', background: 'var(--blue)', rotation: -3, autoAlpha: 1 });
+    gsap.set('#ring', { width: '56vmin', height: '56vmin', top: '50%', left: '50%', xPercent: -50, yPercent: -50, autoAlpha: 1 });
+
+    tl.fromTo(['#b1','#b2','#b3'],
+        { xPercent: -120 },
+        { xPercent: 0, duration: 0.55, stagger: 0.07, ease: 'power4.out' }, 5.9)
+      .fromTo('#ring',
+        { scale: 0, rotation: -90, autoAlpha: 0 },
+        { scale: 1, rotation: 0, autoAlpha: 1, duration: 0.75, ease: 'power3.out' }, 5.95);
+
+    tl.set('#s6', { autoAlpha: 1 }, 6.05)
+      .from(charsOf('#s6 .brandmark'), {
+        yPercent: 115, rotateX: -85, opacity: 0,
+        stagger: { each: 0.06, from: 'start' }, duration: 0.75, ease: 'back.out(1.8)'
+      }, 6.05)
+      // the red dot pops with extra punch
+      .from('#s6 .brandmark .red', {
+        scale: 0, duration: 0.5, ease: 'back.out(3)'
+      }, 6.55)
+      .to('#s6 .brandmark .red', {
+        scale: 1.25, duration: 0.45, yoyo: true, repeat: 1, ease: 'sine.inOut'
+      }, 6.9)
+      .from('#s6 .kicker', { yPercent: 100, opacity: 0, duration: 0.55 }, 6.7)
+      .to('#s6 .brandmark', { scale: 1.03, duration: 1.0, ease: 'sine.inOut' }, 6.9)
+      .to('#ring', { rotation: 18, duration: 1.4, ease: 'sine.inOut' }, 6.2);
+
+    // subtle finale flash
+    tl.to('#flash', { opacity: 0.35, duration: 0.06 }, 6.05)
+      .to('#flash', { opacity: 0, duration: 0.3 }, 6.11);
+
+    tl.to({}, { duration: 0.5 }); // hold on brand
+    return tl;
+  }
+
+  let master = build();
+
+  document.getElementById('replay').addEventListener('click', () => master.restart());
+</script>
+</body>
+</html>

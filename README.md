@@ -2,6 +2,8 @@
 
 > Kinetic typography skills for AI coding agents — animate headlines, stagger text reveals, and build lyric/title videos across CSS, GSAP, Framer Motion, and Remotion.
 
+![Kinetic Typography Skills — animated showcase](./showcase.gif)
+
 ## Install
 
 ```bash
