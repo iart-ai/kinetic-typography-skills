@@ -21,4 +21,4 @@ Kinetic typography and animated text for motion designers and developers. Covers
 - `references/reveal-recipes.md` — copy-ready reveal recipes for CSS, GSAP, Framer Motion, and Remotion.
 
 ---
-Part of **[Kinetic Typography Skills](../)** · Built by **[iart.ai](https://iart.ai)** — controllable Motion Graphics MP4 from a prompt or data.
+Part of **[Kinetic Typography Skills](../)** · Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.

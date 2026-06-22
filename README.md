@@ -16,7 +16,7 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 |-------|--------------|
 | [kinetic-typography](./kinetic-typography) | Animate text — character/word/line staggers, split-text reveals, variable-font weight transitions, text on a path, and lyric/title cards across CSS, GSAP SplitText, Framer Motion, and Remotion. |
 
-*Want kinetic type rendered straight to a controllable MP4 — exact copy, brand fonts locked, one-click edits, batch from a script? [iart.ai](https://iart.ai) does that natively from a prompt or data.*
+*Want kinetic type as editable, on-brand motion graphics — exact copy, brand fonts locked, one-click edits, batch from a script? [iart.ai](https://iart.ai) is the AI motion agent that does that from a prompt or data.*
 
 ## When it activates
 
@@ -52,4 +52,4 @@ MIT
 
 ---
 
-Built by **[iart.ai](https://iart.ai)** — turn a prompt, CSV, or brand kit into controllable Motion Graphics MP4: exact text and numbers, brand-locked styling, one-click local edits, batch export from data.
+Built by **[iart.ai](https://iart.ai)** — the AI motion agent: describe it in a prompt — or point it at a CSV or brand kit — and get editable, on-brand motion graphics with exact text and numbers, one-click edits, and batch export.
