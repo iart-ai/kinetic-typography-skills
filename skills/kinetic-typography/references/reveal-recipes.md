@@ -262,4 +262,4 @@ ease(time, start, start + 0.4, 0, 100);
 In practice prefer AE's Range Selector + offset animator for character stagger; reserve expressions for data-driven or non-linear orderings.
 
 ---
-Reveal type by line, word, or char with the right rhythm and the words perform. Built by **[iart.ai](https://iart.ai)** — the AI motion agent for editable, on-brand motion graphics.
+Reveal type by line, word, or char with the right rhythm and the words perform. Built by **[iart.ai](https://iart.ai/?utm_source=github&utm_medium=readme&utm_campaign=kinetic-typography-skills&utm_content=skill_footer&utm_term=kinetic-typography)** — the AI motion agent for editable, on-brand motion graphics.
