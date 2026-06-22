@@ -1,0 +1,22 @@
+{
+  "name": "kinetic-typography-skills",
+  "version": "0.1.0",
+  "description": "Kinetic typography skills for AI coding agents — animate headlines, stagger text reveals, and build lyric/title videos across CSS, GSAP, Framer Motion, and Remotion.",
+  "author": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "homepage": "https://iart.ai",
+  "repository": "https://github.com/iart-ai/kinetic-typography-skills",
+  "license": "MIT",
+  "keywords": [
+    "kinetic-typography",
+    "text-animation",
+    "animated-text",
+    "title-animation",
+    "lyric-video",
+    "gsap",
+    "motion-graphics",
+    "claude-skill"
+  ]
+}

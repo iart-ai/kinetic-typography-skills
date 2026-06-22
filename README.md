@@ -10,13 +10,21 @@
 npx skills add iart-ai/kinetic-typography-skills
 ```
 
+Or add it as a Claude Code plugin marketplace:
+
+```bash
+/plugin marketplace add iart-ai/kinetic-typography-skills
+```
+
+then `/plugin install kinetic-typography-skills`.
+
 Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## What's included
 
 | Skill | What it does |
 |-------|--------------|
-| [kinetic-typography](./kinetic-typography) | Animate text — character/word/line staggers, split-text reveals, variable-font weight transitions, text on a path, and lyric/title cards across CSS, GSAP SplitText, Framer Motion, and Remotion. |
+| [kinetic-typography](./skills/kinetic-typography) | Animate text — character/word/line staggers, split-text reveals, variable-font weight transitions, text on a path, and lyric/title cards across CSS, GSAP SplitText, Framer Motion, and Remotion. |
 
 *Want kinetic type as editable, on-brand motion graphics — exact copy, brand fonts locked, one-click edits, batch from a script? [iart.ai](https://iart.ai) is the AI motion agent that does that from a prompt or data.*
 
@@ -35,7 +43,7 @@ Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
 
 ## Skills
 
-- [kinetic-typography](./kinetic-typography)
+- [kinetic-typography](./skills/kinetic-typography)
 
 ## Topics
 

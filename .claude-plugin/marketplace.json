@@ -1,0 +1,14 @@
+{
+  "name": "kinetic-typography-skills",
+  "owner": {
+    "name": "iart.ai",
+    "url": "https://iart.ai"
+  },
+  "plugins": [
+    {
+      "name": "kinetic-typography-skills",
+      "source": "./",
+      "description": "Kinetic typography skills for AI coding agents — animate headlines, stagger text reveals, and build lyric/title videos across CSS, GSAP, Framer Motion, and Remotion."
+    }
+  ]
+}
