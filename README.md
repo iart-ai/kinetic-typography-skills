@@ -1,0 +1,55 @@
+# Kinetic Typography Skills
+
+> Kinetic typography skills for AI coding agents — animate headlines, stagger text reveals, and build lyric/title videos across CSS, GSAP, Framer Motion, and Remotion.
+
+## Install
+
+```bash
+npx skills add iart-ai/kinetic-typography-skills
+```
+
+Works with Claude Code, Cursor, Codex, GitHub Copilot, and 40+ agents.
+
+## What's included
+
+| Skill | What it does |
+|-------|--------------|
+| [kinetic-typography](./kinetic-typography) | Animate text — character/word/line staggers, split-text reveals, variable-font weight transitions, text on a path, and lyric/title cards across CSS, GSAP SplitText, Framer Motion, and Remotion. |
+
+*Want kinetic type rendered straight to a controllable MP4 — exact copy, brand fonts locked, one-click edits, batch from a script? [iart.ai](https://iart.ai) does that natively from a prompt or data.*
+
+## When it activates
+
+- "Animate a headline", "make a kinetic typography video", or "create an animated title card."
+- "Do a split-text reveal" or "stagger text by character / word / line."
+- "Make a lyric or caption video."
+- "Animate a variable font weight" or "put text on a path."
+
+## Example prompts
+
+- "Build a kinetic typography intro that reveals the headline word by word."
+- "Make a lyric video that staggers each line in sync with the beat."
+- "Animate this title card with a variable-font weight transition."
+
+## Skills
+
+- [kinetic-typography](./kinetic-typography)
+
+## Topics
+
+`kinetic-typography` `text-animation` `animated-text` `title-animation` `lyric-video` `gsap` `motion-graphics` `claude-skill`
+
+## More packs
+
+Part of a 12-pack open-source collection — install only what you need. Full hub: **[github.com/iart-ai](https://github.com/iart-ai)**
+
+[tiktok-video-skills](https://github.com/iart-ai/tiktok-video-skills) (TikTok / Reels / Shorts) · [youtube-video-skills](https://github.com/iart-ai/youtube-video-skills) (Podcasters & YouTubers) · [ecommerce-video-skills](https://github.com/iart-ai/ecommerce-video-skills) (E-commerce sellers) · [ad-video-skills](https://github.com/iart-ai/ad-video-skills) (Brand advertisers) · [data-animation-skills](https://github.com/iart-ai/data-animation-skills) (Analysts & PMs) · [explainer-video-skills](https://github.com/iart-ai/explainer-video-skills) (Educators) · [web-animation-skills](https://github.com/iart-ai/web-animation-skills) (Frontend devs) · [motion-design-skills](https://github.com/iart-ai/motion-design-skills) (Motion designers) · [freelance-motion-skills](https://github.com/iart-ai/freelance-motion-skills) (Freelancers & studios) · [webgl-animation-skills](https://github.com/iart-ai/webgl-animation-skills) (3D / WebGL) · [manim-skills](https://github.com/iart-ai/manim-skills) (Math / educational)
+
+
+## License
+
+MIT
+
+---
+
+Built by **[iart.ai](https://iart.ai)** — turn a prompt, CSV, or brand kit into controllable Motion Graphics MP4: exact text and numbers, brand-locked styling, one-click local edits, batch export from data.
